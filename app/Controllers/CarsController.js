@@ -18,11 +18,16 @@ function _drawCarForm() {
   setHTML('listing-form', Car.GetCarFormTemplate(car))
 }
 
+function _drawActiveCar() {
+  setHTML('details', appState.activeCar.ActiveCarTemplate)
+}
+
 
 export class CarsController {
   constructor() {
-    appState.on('cars', _drawCars)
+    appState.on('cart', _drawCars)
     appState.on('activeCar', _drawCarForm)
+    appState.on('activeCar', _drawActiveCar)
     this.getCars()
     _drawCarForm()
   }
@@ -57,7 +62,7 @@ export class CarsController {
     carsService.setActive(id)
   }
 
-  async editCar(id) {
+  editCar(id) {
     try {
       window.event.preventDefault()
       const form = window.event.target
@@ -75,13 +80,17 @@ export class CarsController {
   async removeCar(id) {
     try {
       console.log('deleting', id);
-      if (await Pop.confirm('Are you sure?', 'Someone spent a lot of time browsing the internet for that perfect picture', 'yeah toss it', 'warning')) {
+      if (Pop.confirm('Are you sure?', 'Someone spent a lot of time browsing the internet for that perfect picture', 'yeah toss it', 'warning')) {
         await carsService.removeCar(id)
       }
     } catch (error) {
       Pop.error(error.message)
       console.error(error)
     }
+  }
+
+  async showCars() {
+    _drawCars()
   }
 
 }

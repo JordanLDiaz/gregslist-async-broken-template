@@ -10,7 +10,7 @@ export class Car {
     this.make = data.make || ''
     this.model = data.model || ''
     this.year = data.year || 0
-    this.price = data.price || 0
+    this.price = 500
     this.color = data.color || ''
     this.imgURL = data.imgUrl || ''// updated from img => imgUrl
     this.description = data.description || ''
@@ -26,11 +26,11 @@ export class Car {
           alt="${this.model}">
         <div class="card-body">
           <h5 class="card-title d-flex justify-content-between mb-2">
-            <span>${this.make} ${this.model}</span>
+            <span>Honda Civic</span>
             <span>$ ${this.price}</span>
           </h5>
           <div class="d-flex justify-content-between">
-            <button onclick="app.carsController.setActiveCar('${this.id}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            <button onclick="app.carsController.setActive('${this.id}')" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
             See Details
             </button>
             <button  class="btn btn-info"  onclick="app.carsController.setActive('${this.id}')">
@@ -42,6 +42,28 @@ export class Car {
           </div>
         </div>
       </div>
+    </div>
+    `
+  }
+
+  get ActiveCarTemplate() {
+    return `
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="exampleModalLabel">${this.make} ${this.model}</h1>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">
+      <h5>
+      ${this.createdAt.toLocaleDateString()}
+      </h5>
+      <img src="${this.imgURL}" alt="car" class="img-fluid">
+      <b>Price: $${this.price}</b>
+      <p>${this.description}</p>
+      <div>Color:${this.color}</div>
+      <div>Year: ${this.year}</div>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
     </div>
     `
   }
@@ -67,7 +89,7 @@ export class Car {
         <label for="car-img">Image</label>
       </div>
       <div class="form-floating mb-3">
-        <input required type="number" class="form-control" id="car-price" placeholder="Car Price" name="price" value="${car.price}">
+        <input required type="number" class="form-control" id="car-price" placeholder="Car Price" name="mileage" value="${car.price}">
         <label for="car-price">Price</label>
       </div>
       <div class="form-floating mb-3">
