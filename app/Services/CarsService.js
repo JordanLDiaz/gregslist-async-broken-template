@@ -21,21 +21,33 @@ class CarsService {
   }
 
   async getCars() {
-    const res = await axios.get('https://bcw-sandbox.herokuapp.com/api/')
+    const res = await axios.get('https://bcw-sandbox.herokuapp.com/api/cars')
     console.log('[GOT CARS]', res.data) //NOTE - REALLY import to check got data.
     appState.cars = res.data.map(c => new Car(c))
   }
   async createCar(carData) {
-    const res = axios.post('https://bcw-sandbox.herokuapp.com/api/cars', newCar)
+    console.log("getting data", carData)
+    const res = await axios.post('https://bcw-sandbox.herokuapp.com/api/cars', carData)
     console.log('[POST CAR]', res.data);
     appState.cars = [...appState.cars, new Car(res.data)]
   }
-  async removeCar() {
-    const res = await axios.delete('https://bcw-sandbox.herokuapp.com/api/cars/')
+  async removeCar(id) {
+    const res = await axios.delete(`https://bcw-sandbox.herokuapp.com/api/cars/${id}`)
     console.log('[DELETE CAR]', res.data);
     Pop.toast(res.data, 'success')
     appState.cars = appState.cars.filter(c => c.id != id)
+    // let index = appState.cars.findIndex(c => c.id == id)
+    // appState.cars.splice(index, 1, new Car(res.data))
   }
+
+  // NOTE nice reference for digging into objects, plus [] notation for keys with hyphens!
+  //   let object = {
+  //   key: value,
+  //   sprites: { picture: url },
+  //   awesome-pic: { cool: nice }
+  //   }
+
+  // object['awesome-pic'].cool
 
 }
 
